@@ -1,0 +1,58 @@
+name: Rubika Cloud Uploader
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_url:
+        description: 'Direct Link to download'
+        required: true
+      folder_name:
+        description: 'Folder name from OctoFetch'
+        required: false
+        default: 'downloads'
+      safe_mode:
+        description: 'Safe mode from OctoFetch'
+        required: false
+        default: 'false'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install rubpy
+
+      - name: Install aria2
+        run: sudo apt-get install aria2
+      
+      - name: Download File with aria2c
+        run: |
+          mkdir -p downloads/parts
+          # نصب aria2
+          sudo apt-get update && sudo apt-get install -y aria2
+          
+          # دانلود پرسرعت با 16 اتصال همزمان
+          aria2c -x 16 -s 16 -k 1M --console-log-level=error --summary-interval=10 "${{ github.event.inputs.file_url }}" -d "downloads" -o "main_file"
+
+
+      - name: Split File (1.99GB Chunks)
+        run: |
+          # تقسیم فایل به قطعات 1900 مگابایتی برای رعایت محدودیت 2 گیگ روبیکا
+          split -b 1990M -d "downloads/main_file" "downloads/parts/part_"
+          # حذف فایل اصلی برای خالی شدن فضا
+          rm "downloads/main_file"
+
+      - name: Restore Rubika Session
+        run: |
+          # تبدیل کد Base64 ذخیره شده در Secrets به فایل سشن واقعی
+          echo "${{ secrets.SESSION_FILE_BASE64 }}" | base64 -d > user_session.rp
+
+      - name: Run Uploader
+        run: python rubika_uploader.py
