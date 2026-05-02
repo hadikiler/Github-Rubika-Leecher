@@ -24,7 +24,7 @@
    ```bash
    python -m venv venv
    # در ویندوز:
-   source venv/Scripts/activate
+   venv\scripts\activate.ps1
    # در لینوکس یا مک:
    source venv/bin/activate
    ```
