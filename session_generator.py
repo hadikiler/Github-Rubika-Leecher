@@ -33,9 +33,6 @@ async def generate_session_string():
             print("COPY THE TEXT ABOVE AND PASTE IN GITHUB SECRETS")
             print("=" * 50)
 
-        # پاکسازی فایل موقت برای امنیت
-        os.remove(session_file)
-        print(f"\nTemporary file {session_file} deleted for security.")
     else:
         print("Error: Session file was not created!")
 
