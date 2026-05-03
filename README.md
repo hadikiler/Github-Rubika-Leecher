@@ -5,7 +5,7 @@
 این پروژه برای دانلود فایل‌ها از لینک مستقیم و آپلود خودکار آن‌ها به پیام‌رسان روبیکا با استفاده از سرویس **GitHub Actions** طراحی شده است.
 
 <div align="center">
-  <a href="https://www.aparat.com/dashboard/videostat/mecsle7">
+  <a href="https://www.aparat.com/v/mecsle7">
     <img src="additional_files/26a59528-f495-4a0a-8840-073394178f74.png" alt="آموزش کار با لیچر" style="width:100%; max-width:600px;">
   </a>
 </div>
